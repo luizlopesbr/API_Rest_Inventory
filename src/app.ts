@@ -4,6 +4,7 @@ import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
 import equipmentRouter from "./routers/equipmentRouter";
+import authRouter from './routers/authRouter';
 
 // Importa a função de conexão ao MongoDB.
 import { connectToDatabase } from "./config/database";
@@ -16,11 +17,13 @@ app.use(cors()); // Conectar a um front-end
 app.use(helmet()); // Proteção contra ataques comuns
 app.use(express.json());
 
+//Rotas
 app.use("/equipments", equipmentRouter);
+app.use('/auth', authRouter);
 
 // Rota padrão
 app.use((req: Request, res: Response, next: NextFunction) => {
-  res.send("Hello world");
+  res.send("Bem vindo!");
 });
 
 // Tratamento de erro para não quebrar a aplicação
