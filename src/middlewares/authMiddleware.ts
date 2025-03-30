@@ -3,6 +3,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 
 interface DecodedToken extends JwtPayload {
   userId: string;
+  role: string; 
 }
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
@@ -10,16 +11,20 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction): void =
 
   if (!token) {
     res.status(401).json({ message: 'Acesso negado. Token não fornecido.' });
-    return;  // Não retorna, apenas finaliza a execução aqui
+    return;
   }
 
   try {
     const decoded = jwt.verify(token, process.env.SECRET || 'your_secret_key') as DecodedToken;
-    req.user = decoded;  //'decoded' tem a propriedade 'userId' corretamente tipada no arquivo types/express.d.ts
-    next(); 
+    
+    req.user = { userId: decoded.userId, role: decoded.role };
+
+    console.log("Usuário autenticado via middleware:", req.user);
+    
+    next();
   } catch (err) {
     res.status(400).json({ message: 'Token inválido.' });
-    return;  
+    return;
   }
 };
 

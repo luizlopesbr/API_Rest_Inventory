@@ -3,10 +3,10 @@ import { registerUser, authenticateUser } from '../services/authService';
 
 // Função para registrar um novo usuário
 async function register(req: Request, res: Response) {
-  const { username, password } = req.body;
+  const { username, password, role, isAdmin } = req.body;
 
   try {
-    const newUser = await registerUser(username, password);
+    const newUser = await registerUser(username, password, role, isAdmin);
     res.status(201).json({ message: 'Usuário registrado com sucesso', userId: newUser._id });
   } catch (err) {
     // Usando asserção de tipo para garantir que err tem a propriedade 'message'

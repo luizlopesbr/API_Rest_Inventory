@@ -3,12 +3,12 @@ import jwt from 'jsonwebtoken';
 import { createUser, findUserByUsername } from '../repositories/autenticationRepository';
 
 // Função para registrar um usuário
-export async function registerUser(username: string, password: string) {
+export async function registerUser(username: string, password: string, role: string, isAdmin: boolean) {
   try {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const newUser = await createUser(username, hashedPassword);
+    const newUser = await createUser(username, hashedPassword, role, isAdmin);
     return newUser;
   } catch (error) {
     throw new Error('Erro ao registrar o usuário');
@@ -28,7 +28,14 @@ export async function authenticateUser(username: string, password: string) {
       throw new Error('Credenciais inválidas');
     }
 
-    const token = jwt.sign({ userId: user._id }, process.env.SECRET || 'your_secret_key', { expiresIn: '10m' });
+    // Gerando o token com 'userId' e 'role'
+    const token = jwt.sign(
+      { userId: user._id, role: user.role }, // Agora o 'role' também é incluído no token
+      process.env.SECRET || 'your_secret_key',
+      { expiresIn: '5m' }
+    );
+    console.log(`Token retornado: ${token}`);
+    
     return token;
   } catch (error) {
     throw new Error('Erro ao autenticar o usuário');

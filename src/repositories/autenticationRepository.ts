@@ -1,10 +1,12 @@
 import Authentication from '../models/authentication';
 
 // Função para criar um usuário
-export async function createUser(username: string, password: string) {
+export async function createUser(username: string, password: string, role: string, isAdmin: boolean) {
   const newUser = new Authentication({
     username,
     password,
+    role,
+    isAdmin
   });
 
   await newUser.save();
