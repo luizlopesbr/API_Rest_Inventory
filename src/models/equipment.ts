@@ -26,9 +26,11 @@ interface Equipment extends Document {
   energyprotectionserial: string;
   energyprotectionpower: string;
   processor: string;
-  memorysize: string;
+  memorysize: number;
+  memoryunit: string;
   memorytype: string;
-  hdsize: string;
+  hdsize: number;
+  hdunit: string;
   hdtype: string;
   nfnumber: number;
   nfdata: string;
@@ -60,9 +62,11 @@ const equipmentSchema: Schema<Equipment> = new Schema({
   energyprotectionserial: { type: String, required: true },
   energyprotectionpower: { type: String, required: true },
   processor: { type: String, required: true },
-  memorysize: { type: String, required: true },
+  memorysize: { type: Number, required: true },
+  memoryunit: { type: String, required: true },
   memorytype: { type: String, required: true },
-  hdsize: { type: String, required: true },
+  hdsize: { type: Number, required: true },
+  hdunit: { type: String, required: true },
   hdtype: { type: String, required: true },
   nfnumber: { type: Number, required: true },
   nfdata: { type: String, required: true },
